@@ -2,12 +2,14 @@ package com.hiufestainfo.domain.pub.service;
 
 import com.hiufestainfo.domain.pub.dto.PubRequestDto;
 import com.hiufestainfo.domain.pub.entity.Pub;
+import com.hiufestainfo.domain.pub.excpeption.PubNotFoundException;
 import com.hiufestainfo.domain.pub.repository.PubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -81,8 +83,14 @@ public class PubService {
 
 
     public String deletePub(Long pubId) {
-        pubRepository.deleteById(pubId);
-        return "Delete Success";
+        Optional<Pub> pubOptional = pubRepository.findById(pubId);
+
+        if (pubOptional.isPresent()) {
+            pubRepository.deleteById(pubId);
+            return "Delete Success";
+        } else {
+            throw new PubNotFoundException(); // Assuming you have a PubNotFoundException class
+        }
     }
 
     public List<Pub> getPubByDepartment(String department){
@@ -92,12 +100,18 @@ public class PubService {
         // Use the repository to find pubs by department
         String korDepartment= convertDepartment(department);
         List<Pub> pubs = pubRepository.findByDepartment(korDepartment);
+        if (pubs.isEmpty()) {
+            throw new PubNotFoundException();
+        }
 
         return pubs;
     }
 
     public List<Pub> getAllPubs (){
         List<Pub> pubs = pubRepository.findAll();
+        if (pubs.isEmpty()) {
+            throw new PubNotFoundException();
+        }
         return pubs;
     }
 
