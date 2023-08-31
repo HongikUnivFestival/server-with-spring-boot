@@ -26,6 +26,7 @@ public class BoothService {
         String boothNum = requestDto.getBoothNum();
         String intro = requestDto.getIntro();
         String boothName = requestDto.getBoothName();
+        String imageUrl= requestDto.getImageUrl();
 
 
         // Booth 엔티티 생성
@@ -33,6 +34,7 @@ public class BoothService {
                 .boothNum(boothNum)
                 .boothName(boothName)
                 .intro(intro)
+                .imageUrl(imageUrl)
                 .build();
 
         // 생성된 Pub 엔티티를 저장하고 반환
@@ -47,6 +49,7 @@ public class BoothService {
         String intro= requestDto.getIntro();
         String boothName = requestDto.getBoothName();
         String boothNum = requestDto.getBoothNum();
+        String imageUrl = requestDto.getImageUrl();
 
         // 요청된 데이터로 엔티티를 수정합니다.
 
@@ -61,8 +64,11 @@ public class BoothService {
         if(boothName==null||(boothName=="")){
             boothName = booth.getBoothName();
         }
+        if(imageUrl==null||(imageUrl=="")){
+            imageUrl=booth.getImageUrl();
+        }
 
-        booth.updateBooth(boothNum,boothName,intro);
+        booth.updateBooth(boothNum,boothName,intro,imageUrl);
 
         // 수정된 엔티티를 저장하고 반환합니다.
         return boothRepository.save(booth);

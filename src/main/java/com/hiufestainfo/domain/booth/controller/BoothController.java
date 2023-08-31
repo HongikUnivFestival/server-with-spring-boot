@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class BoothController {
 
     private final BoothService boothService;
