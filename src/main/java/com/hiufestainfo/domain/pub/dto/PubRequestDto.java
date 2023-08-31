@@ -2,6 +2,7 @@ package com.hiufestainfo.domain.pub.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 @Builder
 @Getter
@@ -14,4 +15,6 @@ public class PubRequestDto {
     private String menu;
     private String section;
     private String pubNum;
+    @Nullable
+    private String imageUrl;
 }

@@ -25,6 +25,7 @@ public class PubService {
         String menu = requestDto.getMenu();
         String section = requestDto.getSection();
         String pubNum = requestDto.getPubNum();
+        String imageUrl =requestDto.getImageUrl();
 
         // Pub 엔티티 생성
         Pub newPub = Pub.builder()
@@ -34,6 +35,7 @@ public class PubService {
                 .menu(menu)
                 .section(section)
                 .pubNum(pubNum)
+                .imageUrl(imageUrl)
                 .build();
 
         // 생성된 Pub 엔티티를 저장하고 반환
@@ -50,6 +52,7 @@ public class PubService {
         String menu = requestDto.getMenu();
         String section= requestDto.getSection();
         String pubNum= requestDto.getPubNum();
+        String imageUrl=requestDto.getImageUrl();
 
         // 요청된 데이터로 엔티티를 수정합니다.
 
@@ -75,7 +78,10 @@ public class PubService {
             department= pub.getDepartment();
 
         }
-        pub.updatePub(major,intro,menu,section,pubNum,department);
+        if(imageUrl== null||(imageUrl=="")){
+            imageUrl=pub.getImageUrl();
+        }
+        pub.updatePub(major,intro,menu,section,pubNum,department,imageUrl);
 
         // 수정된 엔티티를 저장하고 반환합니다.
         return pubRepository.save(pub);

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -28,13 +29,17 @@ public class Pub {
 
     private String section;
     private String pubNum;
-    public void updatePub(String major, String intro,String menu,String section,String pubNum,String department){
+
+    @Nullable
+    private String imageUrl;
+    public void updatePub(String major, String intro,String menu,String section,String pubNum,String department,String imageUrl){
         this.major =major;
         this.intro = intro;
         this.menu = menu;
         this.section=section;
         this.pubNum=pubNum;
         this.department=department;
+        this.imageUrl=imageUrl;
     }
 
 
