@@ -24,6 +24,9 @@ configurations {
 repositories {
 	mavenCentral()
 }
+dependencies {
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -39,8 +42,15 @@ dependencies {
 	/* jackson */
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5'
+	/* swagger */
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	/* Feign client */
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.8'
+	implementation('io.github.openfeign:feign-jackson:12.1')
+	/* redis */
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
-
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
