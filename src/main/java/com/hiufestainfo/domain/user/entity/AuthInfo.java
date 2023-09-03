@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import static com.hiufestainfo.domain.user.entity.AccountStatus.MEMEBER;
+import static com.hiufestainfo.domain.user.entity.AccountStatus.MEMBER;
 import static com.hiufestainfo.domain.user.entity.Role.GUEST;
 
 @Embeddable
@@ -31,7 +31,7 @@ public class AuthInfo {
         return AuthInfo.builder()
                 .loginType(loginType)
                 .email(email)
-                .accountStatus(MEMEBER)
+                .accountStatus(MEMBER)
                 .role(GUEST)
                 .build();
     }
