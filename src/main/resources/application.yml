@@ -18,11 +18,21 @@ spring:
       default_batch_fetch_size: 500
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token_exp: ${JWT_ACESS_TOKEN_EXP}
   refresh-token_exp: ${JWT_REFRESH_TOKEN_EXP}
+
+kakao:
+  iss: ${KAKAO_ISS}
+  client-id: ${KAKAO_CLIENT_ID}
+  client-secret: ${KAKAO_CLIENT_SECRET}
+  redirect-url: ${KAKAO_REDIRECT_URL}
+  app-key: ${KAKAO_APP_KEY}
 
 logging:
   level:

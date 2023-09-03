@@ -14,16 +14,9 @@ public class StaticValue {
     public static final String ACCESS_TOKEN = "AccessToken";
     public static final String REFRESH_TOKEN = "RefreshToken";
 
-    /* swagger urls */
-//    public static final String[] SwaggerUrlPatterns = {
-//            "/v2/api-docs",
-//            "/swagger-resources",
-//            "/swagger-resources/**",
-//            "/configuration/ui",
-//            "/configuration/security",
-//            "/swagger-ui.html",
-//            "/webjars/**",
-//            "/v3/api-docs/**",
-//            "/swagger-ui/**"
-//    };
+    public static final String KAKAO_PUBLIC_KEYS = "kakaoPublicKeys";
+
+    public static final String REFRESH_TOKEN_KEY = "refreshToken";
+    public static final int REFRESH_TOKEN_EXPIRE_SEC = 1209600;
+
 }
