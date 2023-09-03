@@ -14,19 +14,19 @@ import org.springframework.lang.Nullable;
 public class FoodTruckDto {
 
     private String brandName;
-    private String menu;
+    private String introduction;
 
     public static FoodTruckDto fromEntity(FoodTruck foodTruck) {
         return FoodTruckDto.builder()
                 .brandName(foodTruck.getBrandName())
-                .menu(foodTruck.getMenu())
+                .introduction(foodTruck.getIntroduction())
                 .build();
     }
 
     public FoodTruck toEntity() {
         return FoodTruck.builder()
                 .brandName(this.brandName)
-                .menu(this.menu)
+                .introduction(this.introduction)
                 .build();
     }
 }

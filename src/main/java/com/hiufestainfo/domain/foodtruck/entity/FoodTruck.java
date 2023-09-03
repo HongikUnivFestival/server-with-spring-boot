@@ -16,7 +16,7 @@ public class FoodTruck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String brandName;
-    private String menu;
+    private String introduction;
 
     protected FoodTruck() {}
 }
