@@ -3,8 +3,12 @@ package com.hiufestainfo.domain.festival.service;
 
 import com.hiufestainfo.domain.festival.dto.FestivalDto;
 import com.hiufestainfo.domain.festival.entity.Festival;
+import com.hiufestainfo.domain.festival.exception.CreateFestivalBadRequestException;
+import com.hiufestainfo.domain.festival.exception.FestivalNotFoundException;
+import com.hiufestainfo.domain.festival.exception.FestivalServiceException;
 import com.hiufestainfo.domain.festival.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,38 +25,42 @@ public class FestivalService {
 
     public void createFestival(FestivalDto festivalDto) {
         Festival newFestival = festivalDto.toEntity();
-        festivalRepository.save(newFestival);
+        try {
+            festivalRepository.save(newFestival);
+        } catch (DataAccessException ex) {
+            throw new CreateFestivalBadRequestException();
+        }
     }
-
 
     public FestivalDto getFestival(Long id) {
-        Festival festival = festivalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 정보를 찾을 수 없습니다."));
-        return FestivalDto.fromEntity(festival);
+        Festival promotion = festivalRepository.findById(id)
+                .orElseThrow(() -> new FestivalNotFoundException());
+        return FestivalDto.fromEntity(promotion);
     }
 
-    public List<FestivalDto> getAllFestivals() {
-        List<Festival> festivals = festivalRepository.findAll();
-        return festivals.stream()
-                .map(FestivalDto::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    public void updateFestival(Long id, FestivalDto updatedFestivalDto) {
+    public void updatePromotion(Long id, FestivalDto updatedFestivalDto) {
         Festival festivalToUpdate = festivalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FestivalNotFoundException());
 
-        festivalToUpdate = updatedFestivalDto.toEntity().toBuilder()  // 업데이트할 필드를 DTO에서 가져와 엔티티로 복사
-                .id(id)  // 기존 ID를 유지하여 업데이트 대상의 엔티티를 지정
+        festivalToUpdate = updatedFestivalDto.toEntity().toBuilder()
+                .id(id)
                 .build();
 
-        festivalRepository.save(festivalToUpdate);
+        try {
+            festivalRepository.save(festivalToUpdate);
+        } catch (DataAccessException ex) {
+            throw new FestivalServiceException();
+        }
     }
 
     public void deleteFestival(Long id) {
         if (!festivalRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 정보를 찾을 수 없습니다.");
+            throw new FestivalNotFoundException();
         }
-        festivalRepository.deleteById(id);
+        try {
+            festivalRepository.deleteById(id);
+        } catch (DataAccessException ex) {
+            throw new FestivalServiceException();
+        }
     }
 }
