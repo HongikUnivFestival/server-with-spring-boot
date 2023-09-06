@@ -33,12 +33,12 @@ public class FestivalService {
     }
 
     public FestivalDto getFestival(Long id) {
-        Festival promotion = festivalRepository.findById(id)
+        Festival festival = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalNotFoundException());
-        return FestivalDto.fromEntity(promotion);
+        return FestivalDto.fromEntity(festival);
     }
 
-    public void updatePromotion(Long id, FestivalDto updatedFestivalDto) {
+    public void updateFestival(Long id, FestivalDto updatedFestivalDto) {
         Festival festivalToUpdate = festivalRepository.findById(id)
                 .orElseThrow(() -> new FestivalNotFoundException());
 
