@@ -37,12 +37,12 @@ public class PubController {
 
 
     //ok
-    @GetMapping("/pubs")
-    public PubResponseDto getAllPubs(){
-        User user = authentiatedUserUtils.getCurrentUser();
-        System.out.println(user.getId());
-        return pubService.getAllPubs(user);
-    }
+//    @GetMapping("/pubs")
+//    public PubResponseDto getAllPubs(){
+//        User user = authentiatedUserUtils.getCurrentUser();
+//        System.out.println(user.getId());
+//        return pubService.getAllPubs(user);
+//    }
 
     @DeleteMapping("/pubs/{pubId}")
     public ResponseEntity<String> deletePub(@PathVariable Long pubId) {

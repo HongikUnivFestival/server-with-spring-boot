@@ -113,15 +113,21 @@ public class PubService {
         //Department enumDepartment = Department.valueOf(department); // Convert department name to enum
         //System.out.println(enumDepartment);
         Boolean isAdmin = false;
+        List<Pub> pubs;
         Role accountStatus = user.getAuthInfo().getRole();
         if( accountStatus.getValue() == "GUEST"){
             isAdmin = false;
         } else if(accountStatus.getValue() == "ADMIN"){
             isAdmin = true;
         }
+
+        if (department.equals("all")){
+            pubs =getAllPubs();
+        }else{
+            String korDepartment= convertDepartment(department);
+            pubs  = pubRepository.findByDepartment(korDepartment);
+        }
         // Use the repository to find pubs by department
-        String korDepartment= convertDepartment(department);
-        List<Pub> pubs  = pubRepository.findByDepartment(korDepartment);
 
         if(pubs==null){
             pubs = new ArrayList<>();
@@ -129,20 +135,12 @@ public class PubService {
         return new PubResponseDto(isAdmin,pubs);
     }
 
-    public PubResponseDto getAllPubs (User user){
-        Boolean isAdmin = false;
-        Role accountStatus = user.getAuthInfo().getRole();
-        System.out.println( accountStatus.getValue());
-        if( accountStatus.getValue() == "GUEST"){
-            isAdmin = false;
-        } else if(accountStatus.getValue() == "ADMIN"){
-            isAdmin = true;
-        }
+    public List<Pub> getAllPubs (){
         List<Pub> pubs = pubRepository.findAll();
         if (pubs == null) {
            pubs = new ArrayList<>();
         }
-        return new PubResponseDto(isAdmin,pubs);
+        return pubs;
     }
 
 
