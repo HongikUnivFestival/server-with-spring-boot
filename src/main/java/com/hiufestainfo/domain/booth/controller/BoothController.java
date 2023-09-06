@@ -1,10 +1,17 @@
 package com.hiufestainfo.domain.booth.controller;
 
 import com.hiufestainfo.domain.booth.dto.BoothRequestDto;
+import com.hiufestainfo.domain.booth.dto.BoothResponseDto;
 import com.hiufestainfo.domain.booth.entity.Booth;
 import com.hiufestainfo.domain.booth.service.BoothService;
+import com.hiufestainfo.domain.user.controller.AuthController;
+import com.hiufestainfo.domain.user.entity.User;
+import com.hiufestainfo.global.config.security.SecurityUtils;
+import com.hiufestainfo.global.utils.AuthentiatedUserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +21,7 @@ import java.util.List;
 public class BoothController {
 
     private final BoothService boothService;
+    private final AuthentiatedUserUtils authentiatedUserUtils;
 
 
     @PostMapping("/booth")
@@ -22,8 +30,10 @@ public class BoothController {
         return ResponseEntity.ok(createdBooth);
     }
     @GetMapping("/booths")
-    public List<Booth> getAllBooths(){
-        return boothService.getAllBooths();
+    public BoothResponseDto getAllBooths(){
+        User user = authentiatedUserUtils.getCurrentUser();
+
+        return boothService.getAllBooths(user);
     }
 
     @PatchMapping("/booth/{boothId}")

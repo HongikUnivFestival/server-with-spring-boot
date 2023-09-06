@@ -12,6 +12,6 @@ public class BoothRequestDto {
     private String boothName;
 
     private String intro;
-    @Nullable
-    private String imageUrl;
+
+    private String host;
 }

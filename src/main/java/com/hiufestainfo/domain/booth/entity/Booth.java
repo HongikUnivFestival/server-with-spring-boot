@@ -25,14 +25,14 @@ public class Booth {
     private String boothName;
 
     private String intro;
-    @Nullable
-    private String imageUrl;
 
-    public void updateBooth(String boothNum,String boothName, String intro,String imageUrl){
+    private String host;
+
+    public void updateBooth(String boothNum,String boothName, String intro,String host){
         this.boothNum = boothNum;
         this.boothName =boothName;
         this.intro = intro;
-        this.imageUrl=imageUrl;
+        this.host=host;
     }
 
 }
