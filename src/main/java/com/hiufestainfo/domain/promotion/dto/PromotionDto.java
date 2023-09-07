@@ -15,14 +15,10 @@ public class PromotionDto {
     private String name;
     private String introduction;
 
-    @Nullable
-    private String imageUrl;
-
     public static PromotionDto fromEntity(Promotion promotion) {
         return PromotionDto.builder()
                 .name(promotion.getName())
                 .introduction(promotion.getIntroduction())
-                .imageUrl(promotion.getImageUrl())
                 .build();
     }
 
@@ -30,7 +26,6 @@ public class PromotionDto {
         return Promotion.builder()
                 .name(this.name)
                 .introduction(this.introduction)
-                .imageUrl(this.imageUrl)
                 .build();
     }
 }
