@@ -20,37 +20,37 @@ public class PromotionController {
     private final PromotionService promotionService;
     private final AuthentiatedUserUtils authentiatedUserUtils;
 
+
     @PostMapping
-    public ResponseEntity<SuccessResponse<String>> createPromotion(@RequestBody PromotionDto promotionDto) {
+    public SuccessResponse<Object> createPromotion(@RequestBody PromotionDto promotionDto) {
         promotionService.createPromotion(promotionDto);
-        String message = "Successfully created";
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.of(message));
+        return SuccessResponse.empty();
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<PromotionResponseDto>> getAllPromotion() {
+    public SuccessResponse<PromotionResponseDto> getAllPromotion() {
         User user = authentiatedUserUtils.getCurrentUser(); // 유저 정보 가져오기
 
         PromotionResponseDto promotionResponse =promotionService.getAllPromotions(user);
 
-        return ResponseEntity.ok(SuccessResponse.of(promotionResponse));
+        return SuccessResponse.of(promotionResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<PromotionDto>> getPromotion(@PathVariable Long id) {
+    public SuccessResponse<PromotionDto> getPromotion(@PathVariable Long id) {
         PromotionDto promotion = promotionService.getPromotion(id);
-        return ResponseEntity.ok(SuccessResponse.of(promotion));
+        return SuccessResponse.of(promotion);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> updatePromotion(@PathVariable Long id, @RequestBody PromotionDto promotionDto) {
+    public SuccessResponse<Void> updatePromotion(@PathVariable Long id, @RequestBody PromotionDto promotionDto) {
         promotionService.updatePromotion(id, promotionDto);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> deletePromotion(@PathVariable Long id) {
+    public SuccessResponse<Void> deletePromotion(@PathVariable Long id) {
         promotionService.deletePromotion(id);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 }

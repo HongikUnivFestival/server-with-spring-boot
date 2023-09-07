@@ -17,7 +17,5 @@ public class Promotion {
     private Long id;
     private String name;
     private String introduction;
-    private String imageUrl;
-
     protected Promotion() {}
 }
