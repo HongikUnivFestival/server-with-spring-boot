@@ -21,31 +21,30 @@ public class FestivalController {
     private final AuthentiatedUserUtils authentiatedUserUtils;
 
     @PostMapping
-    public ResponseEntity<SuccessResponse<String>> createFestival(@RequestBody FestivalDto festivalDto) {
+    public SuccessResponse<Object> createFestival(@RequestBody FestivalDto festivalDto) {
         festivalService.createFestival(festivalDto);
-        String message = "Successfully created";
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.of(message));
+        return SuccessResponse.empty();
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<FestivalResponseDto>> getFestival() {
+    public SuccessResponse<FestivalResponseDto> getFestival() {
         Long defaultId = 1L; // 항상 1인 id를 사용
         User user = authentiatedUserUtils.getCurrentUser();
         FestivalResponseDto festivalResponse = festivalService.getFestival(defaultId,user);
-        return ResponseEntity.ok(SuccessResponse.of(festivalResponse));
+        return SuccessResponse.of(festivalResponse);
     }
 
     @PatchMapping
-    public ResponseEntity<SuccessResponse<Void>> updateFestival(@RequestBody FestivalDto festivalDto) {
+    public SuccessResponse<Object> updateFestival(@RequestBody FestivalDto festivalDto) {
         Long defaultId = 1L; // 항상 1인 id를 사용
         festivalService.updateFestival(defaultId, festivalDto);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 
     @DeleteMapping
-    public ResponseEntity<SuccessResponse<Void>> deleteFestival() {
+    public SuccessResponse<Object> deleteFestival() {
         Long defaultId = 1L; // 항상 1인 id를 사용
         festivalService.deleteFestival(defaultId);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 }
