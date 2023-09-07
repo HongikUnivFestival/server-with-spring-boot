@@ -7,4 +7,5 @@ public class BoothNotFoundException  extends BaseException {
     public BoothNotFoundException() {
         super(BoothErrorCode.BOOTH_NOT_FOUND);
     }
+
 }
