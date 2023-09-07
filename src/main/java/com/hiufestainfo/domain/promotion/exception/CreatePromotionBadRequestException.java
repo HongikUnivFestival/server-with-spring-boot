@@ -7,6 +7,6 @@ public class CreatePromotionBadRequestException extends BaseException {
 
 
     public CreatePromotionBadRequestException() {
-        super(PromotionErrorCode.CREATE_Promotion_BAD_REQUEST);
+        super(PromotionErrorCode.CREATE_PROMOTION_BAD_REQUEST);
     }
 }
