@@ -43,13 +43,13 @@ public class PromotionController {
     }
 
     @PatchMapping("/{id}")
-    public SuccessResponse<Void> updatePromotion(@PathVariable Long id, @RequestBody PromotionDto promotionDto) {
+    public SuccessResponse<Object> updatePromotion(@PathVariable Long id, @RequestBody PromotionDto promotionDto) {
         promotionService.updatePromotion(id, promotionDto);
         return SuccessResponse.empty();
     }
 
     @DeleteMapping("/{id}")
-    public SuccessResponse<Void> deletePromotion(@PathVariable Long id) {
+    public SuccessResponse<Object> deletePromotion(@PathVariable Long id) {
         promotionService.deletePromotion(id);
         return SuccessResponse.empty();
     }
