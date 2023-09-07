@@ -21,31 +21,30 @@ public class DjDetailController {
     private final AuthentiatedUserUtils authentiatedUserUtils;
 
     @PostMapping
-    public ResponseEntity<SuccessResponse<String>> createDjDetail(@RequestBody DjDetailDto djDetailDto) {
+    public SuccessResponse<Object> createDjDetail(@RequestBody DjDetailDto djDetailDto) {
         djDetailService.createDjDetail(djDetailDto);
-        String message = "Successfully created";
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.of(message));
+        return SuccessResponse.empty();
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<DjDetailResponseDto>> getAllDjDetail() {
-        User user = authentiatedUserUtils.getCurrentUser(); // 유저 정보 가져오기
+    public SuccessResponse<Object> getAllDjDetail() {
+        User user = authentiatedUserUtils.getCurrentUser();
 
         DjDetailResponseDto djDetailResponse = djDetailService.getAllDjDetails(user);
 
-        return ResponseEntity.ok(SuccessResponse.of(djDetailResponse));
+        return SuccessResponse.of(djDetailResponse);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> updateDjDetail(@PathVariable Long id, @RequestBody DjDetailDto djDetailDto) {
+    public SuccessResponse<Object> updateDjDetail(@PathVariable Long id, @RequestBody DjDetailDto djDetailDto) {
         djDetailService.updateDjDetail(id, djDetailDto);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> deleteDjDetail(@PathVariable Long id) {
+    public SuccessResponse<Object> deleteDjDetail(@PathVariable Long id) {
         djDetailService.deleteDjDetail(id);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 }
 

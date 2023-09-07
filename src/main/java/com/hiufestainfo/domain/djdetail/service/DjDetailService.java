@@ -46,7 +46,6 @@ public class DjDetailService {
 
         List<DjDetail> djDetails = djDetailRepository.findAll();
 
-        // djDetails가 null이면 빈 리스트로 초기화
         if (djDetails == null) {
             djDetails = new ArrayList<>();
         }
