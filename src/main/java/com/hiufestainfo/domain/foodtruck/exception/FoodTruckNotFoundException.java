@@ -5,6 +5,6 @@ import com.hiufestainfo.global.exception.base.BaseException;
 public class FoodTruckNotFoundException extends BaseException {
 
     public FoodTruckNotFoundException() {
-        super(FoodTruckErrorCode.FoodTruck_NOT_FOUND);
+        super(FoodTruckErrorCode.FOODTRUCK_NOT_FOUND);
     }
 }
