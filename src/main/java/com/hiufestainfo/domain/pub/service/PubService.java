@@ -1,13 +1,19 @@
 package com.hiufestainfo.domain.pub.service;
 
 import com.hiufestainfo.domain.pub.dto.PubRequestDto;
+import com.hiufestainfo.domain.pub.dto.PubResponseDto;
 import com.hiufestainfo.domain.pub.entity.Pub;
+import com.hiufestainfo.domain.pub.excpeption.DepartmentNotFoundException;
 import com.hiufestainfo.domain.pub.excpeption.PubNotFoundException;
 import com.hiufestainfo.domain.pub.repository.PubRepository;
+import com.hiufestainfo.domain.user.entity.Role;
+import com.hiufestainfo.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +32,8 @@ public class PubService {
         String section = requestDto.getSection();
         String pubNum = requestDto.getPubNum();
         String imageUrl =requestDto.getImageUrl();
-
+        //findDepartment해서 해당 department없으면 DEPARTMENT NOT FOUND에러 호출하고 저장 x
+        findDepartment(department);
         // Pub 엔티티 생성
         Pub newPub = Pub.builder()
                 .major(major)
@@ -45,7 +52,7 @@ public class PubService {
     public Pub updatePub(Long pubId, PubRequestDto requestDto) {
         // pubId를 이용하여 업데이트할 Pub 엔티티를 조회합니다.
         Pub pub = pubRepository.findById(pubId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid pub ID: " + pubId));
+                .orElseThrow(() -> new PubNotFoundException());
         String major = requestDto.getMajor();
         String department = requestDto.getDepartment();
         String intro= requestDto.getIntro();
@@ -53,6 +60,9 @@ public class PubService {
         String section= requestDto.getSection();
         String pubNum= requestDto.getPubNum();
         String imageUrl=requestDto.getImageUrl();
+
+        //department에러 로직 추가하기
+        findDepartment(department);
 
         // 요청된 데이터로 엔티티를 수정합니다.
 
@@ -99,24 +109,36 @@ public class PubService {
         }
     }
 
-    public List<Pub> getPubByDepartment(String department){
+    public PubResponseDto getPubByDepartment(String department,User user){
         //Department enumDepartment = Department.valueOf(department); // Convert department name to enum
         //System.out.println(enumDepartment);
-
-        // Use the repository to find pubs by department
-        String korDepartment= convertDepartment(department);
-        List<Pub> pubs = pubRepository.findByDepartment(korDepartment);
-        if (pubs.isEmpty()) {
-            throw new PubNotFoundException();
+        Boolean isAdmin = false;
+        List<Pub> pubs;
+        Role accountStatus = user.getAuthInfo().getRole();
+        if( accountStatus.getValue() == "GUEST"){
+            isAdmin = false;
+        } else if(accountStatus.getValue() == "ADMIN"){
+            isAdmin = true;
         }
 
-        return pubs;
+        if (department.equals("all")){
+            pubs =getAllPubs();
+        }else{
+            String korDepartment= convertDepartment(department);
+            pubs  = pubRepository.findByDepartment(korDepartment);
+        }
+        // Use the repository to find pubs by department
+
+        if(pubs==null){
+            pubs = new ArrayList<>();
+        }
+        return new PubResponseDto(isAdmin,pubs);
     }
 
     public List<Pub> getAllPubs (){
         List<Pub> pubs = pubRepository.findAll();
-        if (pubs.isEmpty()) {
-            throw new PubNotFoundException();
+        if (pubs == null) {
+           pubs = new ArrayList<>();
         }
         return pubs;
     }
@@ -145,8 +167,44 @@ public class PubService {
                 return "공대";
             case "union":
                 return "총동아리 연합";
+            case "architecture":
+                return "건축";
+            case "designBusiness":
+                return "디자인경영융합";
+
             default:
-                throw new IllegalArgumentException("Invalid department name: " + departmentName);
+                throw new DepartmentNotFoundException();
+        }
+    }
+
+    private Boolean findDepartment(String department){
+        switch (department){
+            case "freeMajor":
+                return true;
+            case "business":
+                return true;
+            case "fineArt":
+                return true;
+            case "economics":
+                return true;
+            case "performingArts":
+                return true;
+            case "education":
+                return true;
+            case "law":
+                return true;
+            case "humanities":
+                return true;
+            case "engineering":
+                return true;
+            case "union":
+                return true;
+            case "architecture":
+                return true;
+            case "designBusiness":
+                return true;
+            default:
+                throw new DepartmentNotFoundException();
         }
     }
 }

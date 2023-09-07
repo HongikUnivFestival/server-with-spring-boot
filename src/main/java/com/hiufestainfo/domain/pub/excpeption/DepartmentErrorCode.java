@@ -6,13 +6,13 @@ import lombok.Getter;
 
 import static com.hiufestainfo.global.constant.StaticValue.NOT_FOUND;
 
-
 @Getter
 @AllArgsConstructor
-public enum PubErrorCode implements BaseErrorCode {
+public enum DepartmentErrorCode implements BaseErrorCode {
 
-    PUB_NOT_FOUND(NOT_FOUND, "PUB_404", "주점이 존재하지 않습니다.");
+    DEPARTMENT_NOT_FOUND(NOT_FOUND, "DEPARTMENT_404", "해당 과가 존재하지 않습니다");
     private final int httpStatus;
     private final String code;
     private final String message;
+
 }
