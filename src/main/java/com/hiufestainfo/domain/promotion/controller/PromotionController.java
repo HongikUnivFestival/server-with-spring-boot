@@ -1,8 +1,11 @@
 package com.hiufestainfo.domain.promotion.controller;
 
 import com.hiufestainfo.domain.promotion.dto.PromotionDto;
+import com.hiufestainfo.domain.promotion.dto.PromotionResponseDto;
 import com.hiufestainfo.domain.promotion.service.PromotionService;
+import com.hiufestainfo.domain.user.entity.User;
 import com.hiufestainfo.global.response.SuccessResponse;
+import com.hiufestainfo.global.utils.AuthentiatedUserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PromotionController {
     private final PromotionService promotionService;
+    private final AuthentiatedUserUtils authentiatedUserUtils;
 
     @PostMapping
     public ResponseEntity<SuccessResponse<String>> createPromotion(@RequestBody PromotionDto promotionDto) {
@@ -24,9 +28,12 @@ public class PromotionController {
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<PromotionDto>>> getAllPromotions() {
-        List<PromotionDto> promotions = promotionService.getAllPromotions();
-        return ResponseEntity.ok(SuccessResponse.of(promotions));
+    public ResponseEntity<SuccessResponse<PromotionResponseDto>> getAllPromotion() {
+        User user = authentiatedUserUtils.getCurrentUser(); // 유저 정보 가져오기
+
+        PromotionResponseDto promotionResponse =promotionService.getAllPromotions(user);
+
+        return ResponseEntity.ok(SuccessResponse.of(promotionResponse));
     }
 
     @GetMapping("/{id}")
