@@ -6,6 +6,6 @@ public class CreateFoodTruckBadRequestException extends BaseException {
 
 
     public CreateFoodTruckBadRequestException() {
-        super(FoodTruckErrorCode.CREATE_FoodTruck_BAD_REQUEST);
+        super(FoodTruckErrorCode.CREATE_FOODTRUCK_BAD_REQUEST);
     }
 }

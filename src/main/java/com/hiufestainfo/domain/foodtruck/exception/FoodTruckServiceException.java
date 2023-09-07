@@ -5,6 +5,6 @@ import com.hiufestainfo.global.exception.base.BaseException;
 public class FoodTruckServiceException extends BaseException {
 
     public FoodTruckServiceException() {
-        super(FoodTruckErrorCode.CREATE_FoodTruck_FAILED);
+        super(FoodTruckErrorCode.CREATE_FOODTRUCK_FAILED);
     }
 }
