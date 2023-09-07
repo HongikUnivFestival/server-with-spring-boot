@@ -2,16 +2,20 @@ package com.hiufestainfo.domain.foodtruck.service;
 
 
 import com.hiufestainfo.domain.foodtruck.dto.FoodTruckDto;
+import com.hiufestainfo.domain.foodtruck.dto.FoodTruckResponseDto;
 import com.hiufestainfo.domain.foodtruck.entity.FoodTruck;
 import com.hiufestainfo.domain.foodtruck.exception.CreateFoodTruckBadRequestException;
 import com.hiufestainfo.domain.foodtruck.exception.FoodTruckNotFoundException;
 import com.hiufestainfo.domain.foodtruck.exception.FoodTruckServiceException;
 import com.hiufestainfo.domain.foodtruck.repository.FoodTruckRepository;
+import com.hiufestainfo.domain.user.entity.Role;
+import com.hiufestainfo.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,18 +40,28 @@ public class FoodTruckService {
         return FoodTruckDto.fromEntity(foodTruck);
     }
 
-    public List<FoodTruckDto> getAllFoodTrucks() {
-        try {
-            List<FoodTruck> foodTrucks = foodTruckRepository.findAll();
-            if (foodTrucks.isEmpty()) {
-                throw new FoodTruckNotFoundException();
-            }
-            return foodTrucks.stream()
-                    .map(FoodTruckDto::fromEntity)
-                    .collect(Collectors.toList());
-        } catch (DataAccessException ex) {
-            throw new FoodTruckServiceException();
+    public FoodTruckResponseDto getAllFoodTrucks(User user) {
+        Boolean isAdmin = false;
+        Role accountStatus = user.getAuthInfo().getRole();
+
+        if ("GUEST".equals(accountStatus.getValue())) {
+            isAdmin = false;
+        } else if ("ADMIN".equals(accountStatus.getValue())) {
+            isAdmin = true;
         }
+
+        List<FoodTruck> foodTrucks = foodTruckRepository.findAll();
+
+        if (foodTrucks == null) {
+            foodTrucks = new ArrayList<>();
+        }
+
+        if (foodTrucks.isEmpty()) {
+            throw new FoodTruckNotFoundException();
+        }
+
+        return new FoodTruckResponseDto(isAdmin, foodTrucks);
+
     }
 
     public void updateFoodTruck(Long id, FoodTruckDto updatedFoodTruckDto) {
