@@ -2,20 +2,21 @@ package com.hiufestainfo.domain.djdetail.service;
 
 
 import com.hiufestainfo.domain.djdetail.dto.DjDetailDto;
+import com.hiufestainfo.domain.djdetail.dto.DjDetailResponseDto;
 import com.hiufestainfo.domain.djdetail.entity.DjDetail;
 import com.hiufestainfo.domain.djdetail.exception.CreateDjDetailBadRequestException;
 import com.hiufestainfo.domain.djdetail.exception.DjDetailNotFoundException;
 import com.hiufestainfo.domain.djdetail.exception.DjDetailServiceException;
 import com.hiufestainfo.domain.djdetail.repository.DjDetailRepository;
+import com.hiufestainfo.domain.user.entity.Role;
+import com.hiufestainfo.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,24 +33,30 @@ public class DjDetailService {
         }
     }
 
-    public DjDetailDto getDjDetail(Long id) {
-        DjDetail djDetail = djDetailRepository.findById(id)
-                .orElseThrow(() -> new DjDetailNotFoundException());
-        return DjDetailDto.fromEntity(djDetail);
-    }
+    public DjDetailResponseDto getAllDjDetails(User user) {
+        Boolean isAdmin = false;
+        Role accountStatus = user.getAuthInfo().getRole();
 
-    public List<DjDetailDto> getAllDjDetails() {
-        try {
-            List<DjDetail> djDetails = djDetailRepository.findAll();
-            if (djDetails.isEmpty()) {
-                throw new DjDetailNotFoundException();
-            }
-            return djDetails.stream()
-                    .map(DjDetailDto::fromEntity)
-                    .collect(Collectors.toList());
-        } catch (DataAccessException ex) {
-            throw new DjDetailServiceException();
+        // "GUEST" 또는 "ADMIN"인지 확인하여 isAdmin 설정
+        if ("GUEST".equals(accountStatus.getValue())) {
+            isAdmin = false;
+        } else if ("ADMIN".equals(accountStatus.getValue())) {
+            isAdmin = true;
         }
+
+        List<DjDetail> djDetails = djDetailRepository.findAll();
+
+        // djDetails가 null이면 빈 리스트로 초기화
+        if (djDetails == null) {
+            djDetails = new ArrayList<>();
+        }
+
+        if (djDetails.isEmpty()) {
+            throw new DjDetailNotFoundException();
+        }
+
+        return new DjDetailResponseDto(isAdmin, djDetails);
+
     }
 
     public void updateDjDetail(Long id, DjDetailDto updatedDjDetailDto) {

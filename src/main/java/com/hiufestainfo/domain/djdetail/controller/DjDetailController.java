@@ -1,8 +1,11 @@
 package com.hiufestainfo.domain.djdetail.controller;
 
 import com.hiufestainfo.domain.djdetail.dto.DjDetailDto;
+import com.hiufestainfo.domain.djdetail.dto.DjDetailResponseDto;
 import com.hiufestainfo.domain.djdetail.service.DjDetailService;
+import com.hiufestainfo.domain.user.entity.User;
 import com.hiufestainfo.global.response.SuccessResponse;
+import com.hiufestainfo.global.utils.AuthentiatedUserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DjDetailController {
     private final DjDetailService djDetailService;
+    private final AuthentiatedUserUtils authentiatedUserUtils;
 
     @PostMapping
     public ResponseEntity<SuccessResponse<String>> createDjDetail(@RequestBody DjDetailDto djDetailDto) {
@@ -24,15 +28,12 @@ public class DjDetailController {
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<DjDetailDto>>> getAllDjDetail() {
-        List<DjDetailDto> djDetails = djDetailService.getAllDjDetails();
-        return ResponseEntity.ok(SuccessResponse.of(djDetails));
-    }
+    public ResponseEntity<SuccessResponse<DjDetailResponseDto>> getAllDjDetail() {
+        User user = authentiatedUserUtils.getCurrentUser(); // 유저 정보 가져오기
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<DjDetailDto>> getDjDetail(@PathVariable Long id) {
-        DjDetailDto djDetail = djDetailService.getDjDetail(id);
-        return ResponseEntity.ok(SuccessResponse.of(djDetail));
+        DjDetailResponseDto djDetailResponse = djDetailService.getAllDjDetails(user);
+
+        return ResponseEntity.ok(SuccessResponse.of(djDetailResponse));
     }
 
     @PatchMapping("/{id}")
