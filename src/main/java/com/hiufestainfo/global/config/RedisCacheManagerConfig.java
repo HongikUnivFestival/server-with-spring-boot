@@ -1,4 +1,4 @@
-package com.hiufestainfo.global.redis.config;
+package com.hiufestainfo.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;

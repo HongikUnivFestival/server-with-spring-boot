@@ -39,4 +39,4 @@ out/
 
 ### env file ###
 .env.*
-.env
+.env.dev
