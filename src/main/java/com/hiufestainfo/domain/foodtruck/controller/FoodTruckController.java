@@ -21,36 +21,36 @@ public class FoodTruckController {
     private final AuthentiatedUserUtils authentiatedUserUtils;
 
     @PostMapping
-    public ResponseEntity<SuccessResponse<String>> createFoodTruck(@RequestBody FoodTruckDto foodTruckDto) {
+    public SuccessResponse<Object> createFoodTruck(@RequestBody FoodTruckDto foodTruckDto) {
         foodTruckService.createFoodTruck(foodTruckDto);
         String message = "Successfully created";
-        return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.of(message));
+        return SuccessResponse.empty();
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<FoodTruckResponseDto>> getAllFoodTruck() {
+    public SuccessResponse<FoodTruckResponseDto> getAllFoodTruck() {
         User user = authentiatedUserUtils.getCurrentUser(); // 유저 정보 가져오기
 
         FoodTruckResponseDto foodTruckResponse = foodTruckService.getAllFoodTrucks(user);
 
-        return ResponseEntity.ok(SuccessResponse.of(foodTruckResponse));
+        return SuccessResponse.of(foodTruckResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<FoodTruckDto>> getFoodTruck(@PathVariable Long id) {
+    public SuccessResponse<FoodTruckDto> getFoodTruck(@PathVariable Long id) {
         FoodTruckDto foodTruck = foodTruckService.getFoodTruck(id);
-        return ResponseEntity.ok(SuccessResponse.of(foodTruck));
+        return SuccessResponse.of(foodTruck);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> updateFoodTruck(@PathVariable Long id, @RequestBody FoodTruckDto foodTruckDto) {
+    public SuccessResponse<Object> updateFoodTruck(@PathVariable Long id, @RequestBody FoodTruckDto foodTruckDto) {
         foodTruckService.updateFoodTruck(id, foodTruckDto);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Void>> deleteFoodTruck(@PathVariable Long id) {
+    public SuccessResponse<Object> deleteFoodTruck(@PathVariable Long id) {
         foodTruckService.deleteFoodTruck(id);
-        return ResponseEntity.ok(SuccessResponse.empty());
+        return SuccessResponse.empty();
     }
 }
