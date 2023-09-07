@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -16,6 +17,8 @@ public class DjDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String djName;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String introduction;
     private String imageUrl;
 
