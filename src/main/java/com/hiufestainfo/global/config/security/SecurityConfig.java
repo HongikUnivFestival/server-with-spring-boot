@@ -26,12 +26,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http
-                .httpBasic().disable().cors()// cors 적용
-                .and()
-                .csrf().disable()
-                .formLogin().disable()
-                .sessionManagement( ).sessionCreationPolicy(SessionCreationPolicy.STATELESS); // JWT이용으로 세션 이용 x
+        http.httpBasic().disable().cors();// cors 적용
+        http.csrf().disable();
+        http.formLogin().disable();
+        http.sessionManagement( ).sessionCreationPolicy(SessionCreationPolicy.STATELESS); // JWT이용으로 세션 이용 x
+        http.apply(filterConfig);
 
         http
                 .authorizeRequests()
@@ -40,6 +39,7 @@ public class SecurityConfig {
 //                .antMatchers("/v1/**").hasRole(ROLE_USER)
 //                .anyRequest().authenticated();
                 .anyRequest().permitAll(); //임시
+
         return http.build();
     }
 
