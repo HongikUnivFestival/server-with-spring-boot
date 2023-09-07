@@ -28,7 +28,7 @@ public class FestivalController {
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<FestivalDto>> getFestival() {
+    public ResponseEntity<SuccessResponse<FestivalResponseDto>> getFestival() {
         Long defaultId = 1L; // 항상 1인 id를 사용
         User user = authentiatedUserUtils.getCurrentUser();
         FestivalResponseDto festivalResponse = festivalService.getFestival(defaultId,user);
