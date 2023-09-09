@@ -17,5 +17,7 @@ public class Promotion {
     private Long id;
     private String name;
     private String introduction;
+
+    private String booth_num;
     protected Promotion() {}
 }

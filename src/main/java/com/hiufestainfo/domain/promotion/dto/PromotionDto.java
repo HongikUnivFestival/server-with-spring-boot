@@ -15,10 +15,13 @@ public class PromotionDto {
     private String name;
     private String introduction;
 
+    private String booth_num;
+
     public static PromotionDto fromEntity(Promotion promotion) {
         return PromotionDto.builder()
                 .name(promotion.getName())
                 .introduction(promotion.getIntroduction())
+                .booth_num(promotion.getBooth_num())
                 .build();
     }
 
@@ -26,6 +29,7 @@ public class PromotionDto {
         return Promotion.builder()
                 .name(this.name)
                 .introduction(this.introduction)
+                .booth_num(this.booth_num)
                 .build();
     }
 }
