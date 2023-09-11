@@ -1,5 +1,6 @@
 package com.hiufestainfo.domain.pub.service;
 
+import com.hiufestainfo.domain.pub.dto.PubCreateRequestDto;
 import com.hiufestainfo.domain.pub.dto.PubRequestDto;
 import com.hiufestainfo.domain.pub.dto.PubResponseDto;
 import com.hiufestainfo.domain.pub.entity.Pub;
@@ -24,26 +25,32 @@ public class PubService {
 
     private final PubRepository pubRepository;  // PubRepository에 해당하는 필드를 선언하세요.
 
-    public Pub createPub(PubRequestDto requestDto) {
+    public Pub createPub(PubCreateRequestDto requestDto) {
         String department = requestDto.getDepartment();
         String major = requestDto.getMajor();
         String intro = requestDto.getIntro();
         String menu = requestDto.getMenu();
         String section = requestDto.getSection();
-        String pubNum = requestDto.getPubNum();
-        String imageUrl =requestDto.getImageUrl();
+        String imageUrl = requestDto.getImageUrl();
         //findDepartment해서 해당 department없으면 DEPARTMENT NOT FOUND에러 호출하고 저장 x
         findDepartment(department);
-        // Pub 엔티티 생성
-        Pub newPub = Pub.builder()
+
+        // Pub 엔티티 생성을 위한 Builder를 먼저 초기화합니다.
+        Pub.PubBuilder pubBuilder = Pub.builder()
                 .major(major)
-                .department(department)
+                .department(department) // 찾은 부서로 설정
                 .intro(intro)
                 .menu(menu)
-                .section(section)
-                .pubNum(pubNum)
-                .imageUrl(imageUrl)
-                .build();
+                .section(section);
+
+        if (imageUrl != null) {
+            pubBuilder.imageUrl(imageUrl);
+        }
+
+        // Pub 엔티티 생성
+        Pub newPub = pubBuilder.build();
+        // Pub 엔티티 생성
+
 
         // 생성된 Pub 엔티티를 저장하고 반환
         return pubRepository.save(newPub);
