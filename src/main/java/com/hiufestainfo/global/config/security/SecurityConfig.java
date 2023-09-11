@@ -50,7 +50,6 @@ public class SecurityConfig {
                 .mvcMatchers(HttpMethod.GET, "/pubs/**")
                 .permitAll()
                 .anyRequest().hasRole("ADMIN");
-        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
 
