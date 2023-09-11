@@ -1,5 +1,6 @@
 package com.hiufestainfo.domain.pub.controller;
 
+import com.hiufestainfo.domain.pub.dto.PubCreateRequestDto;
 import com.hiufestainfo.domain.pub.dto.PubRequestDto;
 import com.hiufestainfo.domain.pub.dto.PubResponseDto;
 import com.hiufestainfo.domain.pub.entity.Pub;
@@ -21,7 +22,7 @@ public class PubController {
 
     //ok
     @PostMapping("/pubs")
-    public ResponseEntity<Pub> createPub(@RequestBody PubRequestDto requestDto) {
+    public ResponseEntity<Pub> createPub(@RequestBody PubCreateRequestDto requestDto) {
         Pub createdPub = pubService.createPub(requestDto);
         //department에러 로직 추가
 
