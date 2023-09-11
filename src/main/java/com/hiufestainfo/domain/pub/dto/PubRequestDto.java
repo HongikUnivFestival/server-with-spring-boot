@@ -2,10 +2,11 @@ package com.hiufestainfo.domain.pub.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-@Builder
 @Getter
+@NoArgsConstructor
 public class PubRequestDto {
     private String major;
 

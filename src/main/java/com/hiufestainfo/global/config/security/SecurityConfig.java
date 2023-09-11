@@ -33,10 +33,10 @@ public class SecurityConfig {
         http.csrf().disable();
         http.formLogin().disable();
         http.sessionManagement( ).sessionCreationPolicy(SessionCreationPolicy.STATELESS); // JWT이용으로 세션 이용 x
+        http.authorizeRequests().expressionHandler(expressionHandler());
         http.apply(filterConfig);
 
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers(swaggerUrlPatterns)
                 .permitAll()
                 .mvcMatchers("/v1/auth/**")
@@ -58,7 +58,7 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchyImpl roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_SUPER_ADMIN > ROLE_ADMIN > ROLE_MANAGER > ROLE_USER");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER > ROLE_GUEST");
         return roleHierarchy;
     }
 
