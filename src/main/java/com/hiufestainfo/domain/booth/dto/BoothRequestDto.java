@@ -2,10 +2,11 @@ package com.hiufestainfo.domain.booth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-@Builder
 @Getter
+@NoArgsConstructor
 public class BoothRequestDto {
     private String boothNum;
 
