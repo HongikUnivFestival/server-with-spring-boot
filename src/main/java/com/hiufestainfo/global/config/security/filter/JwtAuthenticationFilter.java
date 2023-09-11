@@ -1,7 +1,9 @@
 package com.hiufestainfo.global.config.security.filter;
 
+import com.hiufestainfo.global.exception.base.BaseException;
 import com.hiufestainfo.global.jwt.JwtProvider;
 import com.hiufestainfo.global.jwt.dto.DecodedJwtToken;
+import com.hiufestainfo.global.utils.FilterExceptionProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,16 +28,20 @@ import static com.hiufestainfo.global.constant.StaticValue.ACCESS_TOKEN;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final FilterExceptionProcessor filterExceptionProcessor;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
-        String token = resolveToken(request);
-        if( token != null) {
-            Authentication authentication = getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication); //SecurityContextHolder에 담기
+        try {
+            String token = resolveToken(request);
+            if (token != null) {
+                Authentication authentication = getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication); //SecurityContextHolder에 담기
+            }
+            chain.doFilter(request, response);
+        }catch (BaseException e){
+            filterExceptionProcessor.excute(response, e);
         }
-        chain.doFilter(request, response);
     }
     private Authentication getAuthentication(String token) {
         DecodedJwtToken decodedJwtToken = jwtProvider.decodeToken(token,ACCESS_TOKEN);

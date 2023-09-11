@@ -1,9 +1,11 @@
 package com.hiufestainfo.global.config.security;
 
+import com.hiufestainfo.global.config.security.filter.CustomAccessDeniedHandler;
 import com.hiufestainfo.global.config.security.filter.FilterConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +20,7 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 @EnableWebSecurity
 public class SecurityConfig {
     private final FilterConfig filterConfig;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -36,10 +39,18 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(swaggerUrlPatterns)
                 .permitAll()
-//                .antMatchers("/v1/**").hasRole(ROLE_USER)
-//                .anyRequest().authenticated();
-                .anyRequest().permitAll(); //임시
-
+                .mvcMatchers("/v1/auth/**")
+                .permitAll()
+                .mvcMatchers(HttpMethod.GET, "/booths")
+                .permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/foodtrucks/**")
+                .permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/promotions/**")
+                .permitAll()
+                .mvcMatchers(HttpMethod.GET, "/pubs/**")
+                .permitAll()
+                .anyRequest().hasRole("ADMIN");
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
 
