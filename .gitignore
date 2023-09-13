@@ -40,3 +40,5 @@ out/
 ### env file ###
 .env.*
 .env.dev
+.env
+
