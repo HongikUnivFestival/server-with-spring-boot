@@ -186,29 +186,29 @@ public class PubService {
 
     private Boolean findDepartment(String department){
         switch (department){
-            case "freeMajor":
+            case "자전":
                 return true;
-            case "business":
+            case "경영":
                 return true;
-            case "fineArt":
+            case "미대":
                 return true;
-            case "economics":
+            case "경제":
                 return true;
-            case "performingArts":
+            case "공연예술":
                 return true;
-            case "education":
+            case "사범대":
                 return true;
-            case "law":
+            case "법대":
                 return true;
-            case "humanities":
+            case "문대":
                 return true;
-            case "engineering":
+            case "공대":
                 return true;
-            case "union":
+            case "총동아리 연합":
                 return true;
-            case "architecture":
+            case "건축":
                 return true;
-            case "designBusiness":
+            case "디자인경영융합":
                 return true;
             default:
                 throw new DepartmentNotFoundException();
